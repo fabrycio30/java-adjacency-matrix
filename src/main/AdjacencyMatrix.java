@@ -173,6 +173,7 @@ public class AdjacencyMatrix {
 					}
 					break;
 				}
+				System.out.println();
 				/*
 				 * for (int row =0; row < this.size; row++){ for (int col = temp.getId(); col <
 				 * size; col++){ if(node[row][col] == 1) {grau = grau+1;}
@@ -187,5 +188,19 @@ public class AdjacencyMatrix {
 		}
 	}	
 	public void visitAllEdges() {
+		Vertex x;
+		Vertex y;
+		System.out.print("Todas as arestas: ");
+		 for (int row = 0; row < this.list.size(); row++) {
+			 x = this.list.get(row);
+			 for (int col = 0; col < this.list.size(); col++) {
+				 y = this.list.get(col);
+				 if(node[x.getId()][y.getId()] == 1) {
+					 System.out.print("("+x.getLabel()+", "+y.getLabel()+") ");
+				 }
+				 
+			 }
+		 }
+		 
 	}
 }

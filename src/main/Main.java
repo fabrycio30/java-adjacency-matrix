@@ -29,6 +29,7 @@ public class Main {
 		g.getGrau("A");
 		g.isAdj("C", "E");
 		g.getVizinhos("A");
+		g.visitAllEdges();
 				
 	}
 
