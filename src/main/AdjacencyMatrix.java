@@ -159,6 +159,58 @@ public class AdjacencyMatrix {
 		}
 		return false;
 	}
+	public void isAdjDirected(String u, String v) {//só para grafo não direcionado
+		
+		Vertex x;
+		Vertex y;
+		boolean ij = false;
+		boolean ji  = false;
+		for (int i = 0; i < this.list.size(); i++) {
+			x=list.get(i);
+			for (int j = 0; j < this.list.size(); j++) {
+				y=list.get(j);
+				if(x.getLabel().compareTo(u) == 0 && y.getLabel().compareTo(v)== 0) {
+					if(node[i][j] == 1) {ij=true;}
+				}
+			}
+		}
+		for (int i = 0; i < this.list.size(); i++) {
+			x=list.get(i);
+			for (int j = 0; j < this.list.size(); j++) {
+				y=list.get(j);
+				if(x.getLabel().compareTo(u) == 0 && y.getLabel().compareTo(v)== 0) {
+					if(node[j][i] == 1) {ji=true;}
+				}
+			}
+		}
+		if(ij==true && ji==true) {
+			System.out.println("Os vertices "+ u + " e "+v+" são adjacentes");
+		}else if(ij==true && ji==false) {
+			System.out.println(v+" é adjacente de " +u+", mas "+u+ " não é adjacente de "+ v);
+		}else if(ij==false && ji==true) {
+			System.out.println(u+" é adjacente de " +v+", mas "+v+ " não é adjacente de "+ u);
+		}else if(ij==false && ji==false) {
+			System.out.println(u+" e "+v+" não são adjacentes!");
+		}
+		
+		//System.out.println(v+" é adjacentes de " +u);
+		//
+		//pegando os vizinhos não adjacentes
+		/*
+		 * for (int i=0; i<this.list.size();i++) { temp = list.get(i);
+		 * if(temp.getLabel().compareTo(vertice) == 0) {
+		 * //System.out.print("Vizinhos de "+vertice+": "); for (int row = 0; row <
+		 * this.size; row++){ for (int col = temp.getId(); col < size; col++){
+		 * if(node[row][col] == 1) { Vertex v = list.get(row);
+		 * System.out.print(v.getLabel()+" "); } break; }
+		 * 
+		 * }
+		 * 
+		 * System.out.println(); } }
+		 */
+		//fim teste
+		//return false;
+	}
 	public void getVizinhos(String vertice) {
 		Vertex temp;
 		List<String> vizinhos =  new ArrayList<String>();
@@ -251,6 +303,8 @@ public class AdjacencyMatrix {
 				 
 			 }
 		 }
+		 System.out.println();
+		 
 		 
 	}
 }
