@@ -1,16 +1,17 @@
 package main;
 
-import java.awt.Button;
+/*import java.awt.Button;
 import java.awt.Component;
 import java.awt.Frame;
+import java.io.*;*/
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.FileInputStream;
-import java.io.IOException;
+//import java.io.IOException;
 
-import frames.FileUpload;
-import frames.FrameGrafoDirecionado;
+
 
 public class Main {
 
@@ -23,11 +24,10 @@ public class Main {
 		  System.out.println("Adicione o caminho completo do arquivo:");
 		  System.out.println("=======================================");
 		  while(sc.hasNext()){ file_path = sc.next();break; } //sc.close();
-		 
 		//Lendo grafo de arquivo
 		
 		String dados = "";
-		//"/home/fabricioalmeida/eclipse-workspace/java-adjacency-matrix/src/main/grafo.txt";
+		//"/home/fabricioalmeida/eclipse-workspace/java-adjacency-matrix/src/main/g.txt";
 		try{    
 			FileInputStream fin=new FileInputStream(file_path);    
 			int i=0;
@@ -40,63 +40,64 @@ public class Main {
 
 		//fim lendo grafo
 		String[] splitDados = dados.split("\n");
-		String tipoGraph = (String)splitDados[0];
-		String vertices  = (String) splitDados[1];
-		String arestas  = (String) splitDados[2];
-		/*
-		 * System.out.print("grafo: "+tipoGraph+"\n");
-		 * System.out.print("Arestas: "+vertices+"\n");
-		 * System.out.print("Arestas: "+arestas+"\n");
-		 */
-
-		String[] v = vertices.split(",");
-
-
+		String [] vtx = splitDados;//vator aux
+		String[] list_vtx = new String[vtx.length-1];//listarestas
+		//System.out.println(vtx.length);
+		for(int i=1; i<vtx.length;i++) {
+			list_vtx[i-1] = vtx[i];
+		}
+				
+		String tipoGraph = (String)splitDados[0];//tipodografo
+		
+		
+		String list_vtx_to_string = "";
+		for (int i=0; i<list_vtx.length;i++) {list_vtx_to_string+= list_vtx[i]+" ";}
+	
+		String nos  = list_vtx_to_string.replace(",", " ");//dividindo arestas em nós
+		
+		
+		
+		//String vertices  = (String) splitDados[1];
+		String arestas  = (String) list_vtx_to_string;
+		
+		String[] v = nos.split(" ");
+		//removendo vertices duplicados
+        Arrays.sort(v);
+        List<String> distinctArray = new ArrayList<String>(); 
+        for(int i = 0; i < v.length; i++) {
+        	distinctArray.add(v[i]);
+        	//System.out.println( distinctArray.get(i) + "-");
+        	}
 		List<String> lista_vertices = new ArrayList<String>();
 		for (int i=0; i< v.length;i++) {
 			lista_vertices.add(v[i]);
 		}
-		/*
-		 * lista_vertices.add("A"); lista_vertices.add("B"); lista_vertices.add("C");
-		 * lista_vertices.add("D"); lista_vertices.add("E"); lista_vertices.add("F");
-		 */
-
-		AdjacencyMatrix g = new AdjacencyMatrix(lista_vertices);
-		/*
-		 * g.addEdgeDirected("A", "B"); g.addEdgeDirected("A", "C");
-		 * g.addEdgeDirected("E", "A"); g.addEdgeDirected("C", "A");
-		 */
-
-		String[] edges = arestas.split(",");
+		String lenvtx = lista_vertices.get(lista_vertices.size()-1);
+		char lenvtx_number = lenvtx.charAt(1);
+		char lenvtx_label = lenvtx.charAt(0);
+		int size = Integer.parseInt(String.valueOf(lenvtx_number));
+		///home/fabricioalmeida/eclipse-workspace/java-adjacency-matrix/src/main/g.txt
 		
-		///String a = "A";
-		//if(tipoGraph == (String)"D") {System.out.println("True");}
+		List<String> lista_vertices2 = new ArrayList<String>();
+		for(int i=1; i<=size;i++){
+			lista_vertices2.add(lenvtx_label+""+i);
+		}
+		
+		AdjacencyMatrix g = new AdjacencyMatrix(lista_vertices2);
+
+		String[] edges = arestas.split(" ");
 		if (tipoGraph.compareTo("D")==0){// deterministico
 			for (int i=0; i<edges.length;i++) {
 				String temp = edges[i];
-				String temp2 = temp.replace("(", "");
-				String temp3 = temp2.replace(")", "");
-				String[] uv = temp3.split(":");
+				String[] uv = temp.split(",");
+				
 				g.addEdgeDirected(uv[0],uv[1]);
-				//System.out.println(uv[0]+""+uv[1]);
 			}
-
-			/*
-			 * g.addEdgeDirected("A", "C"); g.addEdgeDirected("E", "A");
-			 * g.addEdgeDirected("D", "A");
-			 */
-
 			System.out.println("================================");
 			System.out.println("Matrix de Adjacencias - GRAFO D");
 			System.out.println("================================");
 
 			g.adjacencyMatrix();
-			
-			
-			//g.getGrauDirected("v2");
-			//g.isAdj("v2", "v3"); funçao só para grafo nao direcionado
-			//g.getVizinhosDirected("v2");
-			//g.visitAllEdges();
 			menuD(g);
 
 
@@ -108,9 +109,10 @@ public class Main {
 			
 			  for (int i=0; i<edges.length;i++) { 
 				  String temp = edges[i];
-				  String temp2 = temp.replace("(", ""); 
-				  String temp3 = temp2.replace(")", ""); 
-				  String[] uv = temp3.split(":"); 
+				  //String temp2 = temp.replace("(", ""); 
+				  //String temp3 = temp2.replace(")", ""); 
+				  //String[] uv = temp3.split(":"); 
+				  String[] uv = temp.split(",");
 				  g.addEdge(uv[0],uv[1]); //System.out.println(uv[0]+""+uv[1]);
 			  }
 			 
@@ -121,40 +123,9 @@ public class Main {
 
 			g.adjacencyMatrix();
 			
-			/*
-			 * System.out.println();
-			 * System.out.println("---------------Menu de questoes----------------");
-			 * System.out.println("1 - Verificar o grau de um determinado vertice");
-			 * System.out.println("2 - Verificar se dois vertices sao adjacentes");
-			 * System.out.println("3 - Buscar os vizinhos de um vertice");
-			 * System.out.println("4 - Buscar todas as arestas do grafo");
-			 * System.out.println("-----------------------------------------------");
-			 */
-			
-			//g.getGrau("v2");
-			//g.isAdj("v2", "v3");
-			//g.getVizinhos("v2");
-			//g.visitAllEdges();
-			//sc.close();
-			///home/fabricioalmeida/eclipse-workspace/java-adjacency-matrix/src/main/grafo.txt
-			//Controle de questões
-			/*
-			 * Scanner opcao = new Scanner(System.in); String opt = "";
-			 * System.out.println(); System.out.println("Adicione a opção correspondente:");
-			 * 
-			 * while(opcao.hasNext()){ opt = opcao.next();break; } //opcao.close();
-			 */			  //System.out.println("O opt é: "+opt);
 			  menuND(g);
 			
 		}
-
-
-		// Interface grafica
-		// FrameGrafoDirecionado f = new FrameGrafoDirecionado();
-		/*
-		 * try { FileUpload frame = new FileUpload(); } catch (IOException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 */
 
 	}
 
